@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prova de Atividades - Professor Substituto SEDF</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; margin: 0 auto; max-width: 800px; padding: 20px; background-color: #f9f9f9; }
-        h1 { text-align: center; color: #333; }
-        .context-box { background-color: #ffffff; border: 1px solid #e0e0e0; border-left: 5px solid #007bff; padding: 20px; margin-top: 30px; margin-bottom: 20px; border-radius: 0 8px 8px 0; }
-        .context-box h3, .context-box h4 { margin-top: 0; color: #007bff; }
-        .context-box footer { font-size: 0.9em; color: #777; margin-top: 15px; text-align: right; }
-        .question { margin-bottom: 20px; border: 1px solid #ddd; padding: 15px; border-radius: 8px; background-color: #fff; transition: background-color 0.3s; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; margin: 0 auto; max-width: 800px; padding: 20px; background-color: #121212; color: #e0e0e0; }
+        h1 { text-align: center; color: #e0e0e0; }
+        .context-box { background-color: #1e1e1e; border: 1px solid #333; border-left: 5px solid #0d6efd; padding: 20px; margin-top: 30px; margin-bottom: 20px; border-radius: 0 8px 8px 0; }
+        .context-box h3, .context-box h4 { margin-top: 0; color: #64b5f6; }
+        .context-box footer { font-size: 0.9em; color: #888; margin-top: 15px; text-align: right; }
+        .question { margin-bottom: 20px; border: 1px solid #333; padding: 15px; border-radius: 8px; background-color: #1e1e1e; transition: background-color 0.3s; }
         .question p { font-weight: bold; margin-top: 0; }
         .options label { margin-right: 15px; font-weight: normal; cursor: pointer; }
         button { display: block; width: 100%; padding: 12px 20px; font-size: 18px; cursor: pointer; background-color: #28a745; color: white; border: none; border-radius: 5px; margin-top: 30px; transition: background-color 0.2s; }
         button:hover { background-color: #218838; }
-        .results { margin-top: 30px; padding: 20px; font-size: 18px; text-align: center; border-radius: 8px; background-color: #e9ecef; border: 1px solid #ced4da;}
+        .results { margin-top: 30px; padding: 20px; font-size: 18px; text-align: center; border-radius: 8px; background-color: #1e1e1e; border: 1px solid #333;}
         .results h2 { margin-top: 0;}
-        .results h3 { font-size: 1.5em; color: #0056b3; }
-        .correct { background-color: #d4edda; border-color: #c3e6cb; }
-        .incorrect { background-color: #f8d7da; border-color: #f5c6cb; }
-        .image-placeholder { text-align: center; margin-bottom: 15px; border: 2px dashed #ccc; padding: 20px; border-radius: 5px; background-color: #fafafa; }
-        .image-placeholder p { font-style: normal; color: #888; font-weight: normal !important; }
+        .results h3 { font-size: 1.5em; color: #64b5f6; }
+        .correct { background-color: #1c3c24; border-color: #2e7d32 !important; }
+        .incorrect { background-color: #4d1f23; border-color: #c62828 !important; }
+        .image-placeholder { text-align: center; margin-bottom: 15px; border: 2px dashed #555; padding: 20px; border-radius: 5px; background-color: #2a2a2a; }
+        .image-placeholder p { font-style: normal; color: #aaa; font-weight: normal !important; }
     </style>
 </head>
 <body>
@@ -65,7 +65,7 @@
                 ]
             },
             {
-                context: `<div class="context-box"><h3>Texto para os itens de 11 a 13.</h3><!-- CAMPO PARA IMAGEM DA TIRINHA --><div class="image-placeholder"><img src="tirinha.jpg" style="max-width: 100%;" alt="Tirinha do Armandinho sobre ler o mundo"><!-- Para adicionar a imagem, substitua esta linha e a de cima pela sua tag <img>. --><!-- Exemplo: <img src="caminho/para/sua/tirinha.jpg" alt="Tirinha do Armandinho sobre ler o mundo" style="max-width:100%;"> --></div><p><strong>Descrição da tirinha (texto de apoio):</strong> A tirinha de Armandinho (Alexandre Beck) é apresentada em quatro quadros:</p><ol style="padding-left: 20px;"><li>Armandinho diz: "PROFESSORES NOS AJUDAM A LER!"</li><li>Um colega responde: "MAS A GENTE JÁ SABE LER!"</li><li>Armandinho, olhando para um globo terrestre, retruca: "A LER O MUNDO!"</li><li>O colega, com um sorriso, diz: "GRATIDÃO!"</li></ol></div>`,
+                context: `<div class="context-box"><h3>Texto para os itens de 11 a 13.</h3><!-- CAMPO PARA IMAGEM DA TIRINHA --><div class="image-placeholder"><img src="https://joaovbelo5.github.io/tirinha.jpg" style="max-width: 100%;" alt="Tirinha do Armandinho sobre ler o mundo"><!-- Para adicionar a imagem, substitua esta linha e a de cima pela sua tag <img>. --><!-- Exemplo: <img src="caminho/para/sua/tirinha.jpg" alt="Tirinha do Armandinho sobre ler o mundo" style="max-width:100%;"> --></div><p><strong>Descrição da tirinha (texto de apoio):</strong> A tirinha de Armandinho (Alexandre Beck) é apresentada em quatro quadros:</p><ol style="padding-left: 20px;"><li>Armandinho diz: "PROFESSORES NOS AJUDAM A LER!"</li><li>Um colega responde: "MAS A GENTE JÁ SABE LER!"</li><li>Armandinho, olhando para um globo terrestre, retruca: "A LER O MUNDO!"</li><li>O colega, com um sorriso, diz: "GRATIDÃO!"</li></ol></div>`,
                 questions: [
                     { text: "11. A tirinha sugere que, na escola, o trabalho com a leitura vai além de tornar uma pessoa capaz de tão somente decifrar conteúdos de textos escritos por saber reunir letras e palavras.", answer: "C" },
                     { text: "12. A informação original seria alterada caso a redação <strong>Alguns professores nos ajudam a ler!</strong> fosse empregada no lugar do período que compõe o primeiro quadrinho.", answer: "C" },

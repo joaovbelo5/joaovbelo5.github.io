@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prova de Atividades - Professor Substituto SEDF</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; margin: 0 auto; max-width: 800px; padding: 20px; background-color: #f9f9f9; }
+        h1 { text-align: center; color: #333; }
+        .context-box { background-color: #ffffff; border: 1px solid #e0e0e0; border-left: 5px solid #007bff; padding: 20px; margin-top: 30px; margin-bottom: 20px; border-radius: 0 8px 8px 0; }
+        .context-box h3, .context-box h4 { margin-top: 0; color: #007bff; }
+        .context-box footer { font-size: 0.9em; color: #777; margin-top: 15px; text-align: right; }
+        .question { margin-bottom: 20px; border: 1px solid #ddd; padding: 15px; border-radius: 8px; background-color: #fff; transition: background-color 0.3s; }
+        .question p { font-weight: bold; margin-top: 0; }
+        .options label { margin-right: 15px; font-weight: normal; cursor: pointer; }
+        button { display: block; width: 100%; padding: 12px 20px; font-size: 18px; cursor: pointer; background-color: #28a745; color: white; border: none; border-radius: 5px; margin-top: 30px; transition: background-color 0.2s; }
+        button:hover { background-color: #218838; }
+        .results { margin-top: 30px; padding: 20px; font-size: 18px; text-align: center; border-radius: 8px; background-color: #e9ecef; border: 1px solid #ced4da;}
+        .results h2 { margin-top: 0;}
+        .results h3 { font-size: 1.5em; color: #0056b3; }
+        .correct { background-color: #d4edda; border-color: #c3e6cb; }
+        .incorrect { background-color: #f8d7da; border-color: #f5c6cb; }
+        .image-placeholder { text-align: center; margin-bottom: 15px; border: 2px dashed #ccc; padding: 20px; border-radius: 5px; background-color: #fafafa; }
+        .image-placeholder p { font-style: normal; color: #888; font-weight: normal !important; }
+    </style>
+</head>
+<body>
+
+    <h1>Prova de Atividades - Professor Substituto SEDF (Edital Nº 53/2023)</h1>
+
+    <form id="quizForm">
+        <!-- O conteúdo da prova será gerado aqui pelo JavaScript -->
+    </form>
+
+    <button type="button" onclick="checkAnswers()">Calcular Nota Final</button>
+
+    <div id="results" class="results"></div>
+
+    <script>
+        // Dados completos da prova
+        const allQuizData = [
+            {
+                context: `<div class="context-box"><h3>Texto para os itens de 1 a 4.</h3><h4>Na escola</h4><p>Democrata é Dona Amarílis, professora na escola pública de uma rua que não vou contar. Ela se virou para os alunos, no começo da aula, e falou assim:<br>— Hoje eu preciso que vocês resolvam uma coisa muito importante. Pode ser?<br>— Pode — a garotada respondeu em coro.<br>— Muito bem. Será uma espécie de plebiscito. A palavra é complicada, mas a coisa é simples. Cada um dá sua opinião, a gente soma as opiniões e a maioria é que decide. Na hora de dar opinião, não falem todos de uma vez só, porque senão vai ser muito difícil eu saber o que é que cada um pensa. Está bem?<br>— Está — respondeu o coro, interessadíssimo.</p><footer>ANDRADE, Carlos Drummond de. Para gostar de ler. v. 2. Crônicas. São Paulo: Ática, 1995, pp. 54-7, com adaptações.</footer></div>`,
+                questions: [
+                    { text: "1. O texto é predominantemente narrativo, pois apresenta, por meio de um narrador, uma sequência de ações em determinado tempo e em certo lugar.", answer: "C" },
+                    { text: "2. A redação <strong>Dona Amarílis é democrata e professora, na escola pública de uma rua, o qual eu não vou contar aonde fica</strong> está totalmente de acordo com a norma-padrão e reproduz o sentido original do primeiro período.", answer: "E" },
+                    { text: "3. No período “Hoje eu preciso que vocês resolvam uma coisa muito importante.”, a segunda oração está subordinada à primeira, pois funciona como complemento do verbo “preciso”.", answer: "C" },
+                    { text: "4. Na oração “a garotada respondeu em coro”, a forma verbal sublinhada deveria, de acordo com a norma-padrão, estar empregada na terceira pessoa do plural.", answer: "E" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens de 5 a 7.</h3><h4>Ao mestre, a flor</h4><pre style="font-family: inherit; font-size: 1em;">Adubar a terra\ncom números e letras\nE sara de poemas\nPara colher lírios,\ncravos e alfazemas.\n\nPorque ensinar\né regar as sementes\nsem afogar a flor.</pre><footer>VAZ, Sérgio. Adaptado.</footer></div>`,
+                questions: [
+                    { text: "5. O autor, por meio de metáforas, procura ressaltar as diferenças e as semelhanças que há entre o exercício do magistério e o da agricultura.", answer: "E" },
+                    { text: "6. No contexto, o trabalho do professor tem como finalidade contribuir para que os alunos, que são a “terra”, possam gerar “lírios”, “cravos” e “alfazemas”.", answer: "C" },
+                    { text: "7. Caso a última estrofe, mantendo-se a ordem original dos termos, fosse transformada em pergunta, o vocábulo “Porque” deveria ser substituído pela forma Por que.", answer: "C" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens de 8 a 10.</h3><h4>Ex-aluna da rede pública recebe prêmio nacional por projeto cultural</h4><p>O protagonismo feminino em projetos de iniciação científica e o potencial de mulheres estudantes, cujas pesquisas demonstram criatividade e dialogam com a ciência do futuro, foram premiados nacionalmente. No Distrito Federal, o trabalho da estudante Gabriely Santos Souza, 18 anos, ex-aluna do Centro de Ensino Médio Elefante Branco (Cemeb), chamou a atenção dos jurados. As dramaturgias acerca de questões étnico-raciais e ciência ganharam prestígio pela criatividade e a aluna foi uma das vencedoras da 4ª edição do prêmio Carolina Bori Ciência & Mulher, que premiou estudantes do ensino médio e da graduação de todo o Brasil.</p><footer>HENRIQUE, Ícaro. Adaptado.</footer></div>`,
+                questions: [
+                    { text: "8. Infere-se que a única condição para que um trabalho fosse premiado pelo Carolina Bori Ciência & Mulher era ter sido desenvolvido por uma aluna do ensino médio ou da graduação.", answer: "E" },
+                    { text: "9. A relação de sentido original seria alterada caso o trecho “cujas pesquisas demonstram criatividade e dialogam com a ciência do futuro” fosse substituído pela redação <strong>cujas pesquisas não só demonstram criatividade, como porém dialogam com a ciência do futuro</strong>.", answer: "C" },
+                    { text: "10. A substituição do termo “a aluna” pelo pronome <strong>ela</strong> comprometeria a relação de sentido do texto.", answer: "E" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens de 11 a 13.</h3><!-- CAMPO PARA IMAGEM DA TIRINHA --><div class="image-placeholder"><img src=tirinha.jpg><!-- Para adicionar a imagem, substitua esta linha e a de cima pela sua tag <img>. --><!-- Exemplo: <img src="caminho/para/sua/tirinha.jpg" alt="Tirinha do Armandinho sobre ler o mundo" style="max-width:100%;"> --></div><p><strong>Descrição da tirinha (texto de apoio):</strong> A tirinha de Armandinho (Alexandre Beck) é apresentada em quatro quadros:</p><ol style="padding-left: 20px;"><li>Armandinho diz: "PROFESSORES NOS AJUDAM A LER!"</li><li>Um colega responde: "MAS A GENTE JÁ SABE LER!"</li><li>Armandinho, olhando para um globo terrestre, retruca: "A LER O MUNDO!"</li><li>O colega, com um sorriso, diz: "GRATIDÃO!"</li></ol></div>`,
+                questions: [
+                    { text: "11. A tirinha sugere que, na escola, o trabalho com a leitura vai além de tornar uma pessoa capaz de tão somente decifrar conteúdos de textos escritos por saber reunir letras e palavras.", answer: "C" },
+                    { text: "12. A informação original seria alterada caso a redação <strong>Alguns professores nos ajudam a ler!</strong> fosse empregada no lugar do período que compõe o primeiro quadrinho.", answer: "C" },
+                    { text: "13. O vocábulo “Gratidão!”, utilizado no quarto quadrinho, também pode, excepcionalmente, ser empregado como fecho das comunicações oficiais, desde que o remetente e o destinatário sejam autoridades de mesma hierarquia.", answer: "E" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Situação hipotética para os itens de 14 a 17.</h3><p>Um servidor público efetivo da Secretaria de Educação do Distrito Federal retirou, sem prévia anuência de sua chefia imediata, objeto de sua repartição. Com base nessa situação hipotética, julgue os itens a seguir.</p></div>`,
+                questions: [
+                    { text: "14. A aplicação de sanção ao ato cometido pelo servidor é decorrência do poder de polícia da Administração Pública.", answer: "E" },
+                    { text: "15. A Secretaria de Educação do Distrito Federal, em face do princípio da especialidade, não detém a competência para punir diretamente o referido servidor público.", answer: "E" },
+                    { text: "16. O ato administrativo que aplicar sanção à infração cometida pelo servidor tem a presunção de legitimidade e veracidade como um de seus atributos.", answer: "C" },
+                    { text: "17. O ato praticado pelo servidor configura-se uma infração leve, sendo punível, em regra, com a sanção de advertência.", answer: "C" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens de 18 a 20.</h3><p>O sistema de abastecimento de água do Distrito Federal (DF) é composto por cinco sistemas produtores: Descoberto, Torto-Santa Maria, Sobradinho-Planaltina, Brazlândia e São Sebastião. Atualmente, estão em operação 392 unidades destinadas à produção de água, entre as quais se encontram instalações de captações (superficiais e subterrâneas), estações elevatórias (de água bruta e tratada), reservatórios (apoiados e elevados), unidades de tratamento (estações de tratamento de água, unidades de cloração de poços e unidades de tratamento simplificado) e dois Centros de Controle Operacional do Sistema Produtor de Água — COS/CECOP, além de 188 adutoras (de água bruta e tratada).</p><footer>ADASA. Adaptado.</footer></div>`,
+                questions: [
+                    { text: "18. A maior parte dos sistemas produtores de água encontra-se na bacia hidrográfica do Paraná em áreas de bioma cerrado.", answer: "C" },
+                    { text: "19. Por causa do clima tropical com estação seca, o abastecimento de água do DF e Entorno apresenta deficiências graves quanto ao acesso e à qualidade da água.", answer: "E" },
+                    { text: "20. A água fornecida à população do DF é, em grande parte, tratada e com condições de consumo satisfatórias. As águas servidas ou esgotos domésticos também são tratados em geral, e a maioria da população tem acesso à rede de esgotamento sanitário.", answer: "C" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens 21 e 22.</h3><p>A Região Integrada de Desenvolvimento do Distrito Federal e Entorno (RIDE-DF) foi instituída pela Lei Complementar nº 94/1998. A definição de sua área de abrangência compreende o Distrito Federal (DF), bem como municípios do estado de Goiás e do estado de Minas Gerais. A RIDE-DF terminou por englobar, em uma mesma região de planejamento, municípios que mantêm com o DF relações de natureza nitidamente metropolitana com outros que estabelecem relações de natureza regional.</p><footer>CODEPLAN. Adaptado.</footer></div>`,
+                questions: [
+                    { text: "21. O adensamento populacional do atual DF tem início com o crescimento desordenado dos municípios goianos em direção a Brasília e teve como resultado uma região metropolitana fortemente conurbada e integrada.", answer: "E" },
+                    { text: "22. A RIDE-DF envolve diversos entes federados: os estados, os municípios, o DF e a União, todos participantes da formulação de políticas públicas de uso desse recorte territorial.", answer: "C" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens de 23 a 25.</h3><p>Em 2021, 40,9% da população do Distrito Federal (DF) se declaravam brancas (1.232.276 habitantes), enquanto 57,3% se declaravam negras (1.726.929), sendo 46,2% pardas (1.392.435) e 11,1% pretas (334.494). Além disso, 1,4% se declarava amarela (41.813) e 0,3%, indígena (9.862). As mulheres negras representavam a maioria dos habitantes da capital federal (28,7%), seguidas pelos homens negros (28,4%), pelas mulheres não negras (23,3%) e pelos homens não negros (19,1%).</p><footer>IPE-DF. Adaptado.</footer></div>`,
+                questions: [
+                    { text: "23. O elevado percentual de população que se declara negra indica a forte atração de mão de obra para o DF, o que resulta na grande participação desse grupo étnico no mercado de trabalho e em significativa desigualdade socioespacial quanto ao acesso ao mercado de trabalho formal e a maior renda.", answer: "C" },
+                    { text: "24. A excelência dos serviços públicos de saúde, educação e alimentação indica que a maior parte da população do DF apresenta ótimos indicadores de qualidade de vida, independentemente de seu grupo étnico.", answer: "E" },
+                    { text: "25. O grupo étnico amarelo é formado por população de origem ameríndia.", answer: "E" }
+                ]
+            },
+            {
+                context: ``, // No context for these questions
+                questions: [
+                    { text: "26. (Com base na Lei nº 13.146/2015) A articulação intersetorial na implementação de políticas públicas, incumbe ao Estado, à família, à comunidade escolar e à sociedade.", answer: "E" },
+                    { text: "27. (Com base na Lei nº 13.146/2015) Nos processos seletivos para ingresso em cursos oferecidos por instituições de ensino superior, todos os candidatos com deficiência têm direito à dilação de tempo para realização do exame de seleção.", answer: "E" },
+                    { text: "28. (Com base na Lei Orgânica do DF) É dever do poder público proceder com a celebração de convênios com prefeituras e estados que compõem a Rede Integrada de Desenvolvimento do Distrito Federal e Entorno (RIDE-DF), de modo a apoiar medidas de aperfeiçoamento dos profissionais da educação.", answer: "C" },
+                    { text: "29. (Com base na Lei Orgânica do DF) A educação é ministrada com base no princípio do pluralismo de ideias e de concepções filosóficas, políticas, estéticas, religiosas e pedagógicas, entre outros, que conduza o educando à formação de uma postura ética e social próprias.", answer: "C" },
+                    { text: "30. (Com base na Lei Orgânica do DF) A educação deve compreender as áreas cognitiva, afetivo-social e físico-motora.", answer: "C" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Contexto para os itens 31 e 32.</h3><p>Com base no Decreto nº 42.590/2021, que versa a respeito do II Plano Distrital de Políticas Públicas para as Mulheres (II PDPM), julgue os itens a seguir.</p></div>`,
+                questions: [
+                    { text: "31. O II PDPM busca garantir a igualdade das mulheres e combater a discriminação de gênero por meio de um conjunto de propostas de políticas públicas elaboradas exclusivamente por órgãos governamentais.", answer: "E" },
+                    { text: "32. Uma das metas do Eixo 1 (Igualdade no Mundo do Trabalho e Autonomia Econômica) do II PDPM é aumentar o número de mulheres com acesso a linhas de crédito e financiamento para fomentar a ação empreendedora.", answer: "C" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Contexto para os itens 33 a 35.</h3><p>A Lei de Diretrizes e Bases da Educação Nacional (LDB) foi promulgada em 1996. No que se refere à LDB, julgue os itens a seguir.</p></div>`,
+                questions: [
+                    { text: "33. A educação abrange os processos formativos que se desenvolvem na vida familiar, na convivência humana, no trabalho, nas instituições de ensino e pesquisa, nos movimentos sociais, nas organizações da sociedade civil e nas manifestações culturais.", answer: "C" },
+                    { text: "34. Os docentes não devem participar da elaboração da proposta pedagógica do estabelecimento de ensino, pois se trata de uma incumbência da direção da escola.", answer: "E" },
+                    { text: "35. A educação escolar é composta pela educação básica, que é formada pela educação infantil, pelo ensino fundamental, pelo ensino médio e pelo ensino superior.", answer: "E" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Contexto para os itens 36 a 38.</h3><p>Considerando o Plano Distrital de Educação (PDE 2015-2024), o Plano Nacional de Educação (PNE 2014-2024) e a Base Nacional Comum Curricular (BNCC), julgue os itens a seguir.</p></div>`,
+                questions: [
+                    { text: "36. Instituído pela Lei nº 5.499/2015, o PDE é a referência para o planejamento das ações da Secretaria de Estado de Educação do Distrito Federal.", answer: "C" },
+                    { text: "37. O PNE, de duração decenal, configura-se como política de Estado, que visa à articulação e à integração de ações das diferentes esferas federativas.", answer: "C" },
+                    { text: "38. A BNCC preconiza a escola como espaço formador e orientador para a cidadania consciente, crítica e participativa.", answer: "C" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens 39 e 40.</h3><p>“A escola é um lugar de instrução e socialização, de expectativas e contradições, de chegadas e partidas, de encontros e desencontros, ou seja, um ambiente onde as diversas dimensões humanas se revelam e são reveladas.”</p><footer>DISTRITO FEDERAL. Secretaria de Estado de Educação do Distrito Federal. Currículo em Movimento da Educação Básica: pressupostos teóricos. Brasília, DF: SEEDF, 2014.</footer></div>`,
+                questions: [
+                    { text: "39. A educação é uma prática social que une os homens entre si em torno do direito de aprender e da conquista da cidadania.", answer: "C" },
+                    { text: "40. A organização do trabalho pedagógico, proposta pelas escolas e inserida em seus projetos político-pedagógicos, deve colocar as crianças, os jovens e os adultos em situações que desfavoreçam as aprendizagens.", answer: "E" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens 41 a 45.</h3><p>“A deficiência pode ser identificada como lugar para a diferença e potencializadora da diversidade e superação das barreiras de todas as ordens — e não como sinônimo de incapacidade.”</p><footer>LOPES, Joseuda B. C.; LOPES, Daiane D.; LEITE, Vania A. M. et al. Educação inclusiva: Grupo A, 2018, p. 9, com adaptações.</footer></div>`,
+                questions: [
+                    { text: "41. O atendimento educacional especializado aos portadores de deficiência será realizado, preferencialmente, na rede regular de ensino.", answer: "C" },
+                    { text: "42. Considera-se acesso, com deficiência, aquela que tem impedimento de longo prazo, de natureza física, mental, intelectual ou sensorial, o qual, em interação com uma ou mais barreiras, pode obstruir sua participação plena e efetiva na sociedade em igualdade de condições com as demais pessoas.", answer: "C" },
+                    { text: "43. Deve haver formação e disponibilização de professores para o atendimento educacional especializado, de tradutores e intérpretes da Libras, de guias intérpretes e de profissionais de apoio.", answer: "C" },
+                    { text: "44. Atualmente, o paradigma dos direitos humanos é inserido no intuito de garantir a dignidade, a autonomia e o acesso a todos os direitos sociais da pessoa com deficiência, bem como o combate à violação de seus direitos.", answer: "C" },
+                    { text: "45. A participação no currículo regular sem as adequações de acesso deve ser uma meta perseguida pelas escolas, no sentido de assegurar a educação inclusiva.", answer: "E" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens 46 a 50.</h3><p>“Na Educação de Jovens e Adultos (EJA), a escola passa a ter uma função social, já que é um local que pode possibilitar aos alunos o resgate da consciência de sua participação na sociedade como um sujeito ativo de direito e deveres.”</p><footer>SIQUEIRA, Antônio Rodolfo de. Educação de jovens e adultos. Porto Alegre: SAGAH, 2017, p. 32, com adaptações.</footer></div>`,
+                questions: [
+                    { text: "46. Os alunos que ingressam na EJA são, em sua maioria, jovens e adultos trabalhadores.", answer: "C" },
+                    { text: "47. As práticas pedagógicas em sala de aula devem estar pautadas pelo planejamento das aulas e pela elaboração de atividades que permitam que a potencialidade de quase todos os alunos seja considerada e respeitada.", answer: "E" },
+                    { text: "48. Os alunos jovens e adultos caracterizam-se como um grupo homogêneo do ponto de vista da faixa etária, da cultura, da visão de mundo e dos conhecimentos prévios.", answer: "E" },
+                    { text: "49. O planejamento das situações de aprendizagem ganha um papel relevante na construção de um ambiente de trabalho fecundo e ajustado ao público jovem e adulto.", answer: "C" },
+                    { text: "50. A avaliação é um momento privilegiado dentro do processo de construção do conhecimento, que vai além de uma mera verificação de resultados.", answer: "C" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens 51 a 55.</h3><p>“Nenhuma Pedagogia realmente libertadora pode ficar distante dos oprimidos, quer dizer, pode fazer deles seres desditados, objetos de um ‘tratamento humanitarista’, para tentar, por meio de exemplos retirados de entre os opressores, obter modelos para a sua promoção. Os oprimidos hão de ser o exemplo para si mesmos, na luta por sua redenção.”</p><footer>FREIRE, Paulo. Pedagogia do Oprimido. 17. Ed. Rio de Janeiro: Paz e Terra, 1993, p. 41, com adaptações.</footer></div>`,
+                questions: [
+                    { text: "51. Entende-se por educação ambiental os processos mediante os quais somente o indivíduo constrói valores sociais, conhecimentos, atitudes, habilidades, voltada para a conservação do meio ambiente, essencial à sadia qualidade de vida e à sua sustentabilidade.", answer: "E" },
+                    { text: "52. A educação ambiental no Distrito Federal deve constar em todos os níveis e em todas as modalidades do processo educativo, em caráter não formal.", answer: "E" },
+                    { text: "53. As escolas da rede pública de ensino deverão priorizar, em suas atividades pedagógicas, a adoção do meio ambiente da Amazônia, incorporando a participação da comunidade na identificação dos problemas e na busca de soluções.", answer: "E" },
+                    { text: "54. A educação do campo é considerada uma das tendências pedagógicas brasileiras mais importantes.", answer: "E" },
+                    { text: "55. A educação do campo busca oportunizar a ligação da formação escolar à formação para uma postura na vida, na comunidade o desenvolvimento do território rural, compreendido este como espaço de vida dos sujeitos camponeses.", answer: "C" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens 56 a 58.</h3><h4>Manifesto dos Pioneiros da Educação Nova (1932)</h4><p>À luz dessas verdades e sob a inspiração de novos ideais de educação, é que se gerou, no Brasil, o movimento de reconstrução educacional, com que, reagindo contra o empirismo dominante, pretendeu um grupo de educadores, nestes últimos doze anos, transferir do terreno administrativo para os planos político-sociais a solução dos problemas escolares. [...] Porque a escola havia de permanecer, entre nós, isolada do ambiente, como uma instituição enquistada no meio social, sem meios de influir sobre ele, quando, por toda a parte, rompendo a barreira das tradições, a ação educativa já desbordava a escola, articulando-se com as outras instituições sociais, para estender o seu raio de influência e de ação?</p><footer>Manifesto dos Pioneiros da Educação Nova, 1932. Adaptado.</footer></div>`,
+                questions: [
+                    { text: "56. O Manifesto dos Pioneiros da Educação Nova foi inspirado na tendência pedagógica liberal tradicional.", answer: "E" },
+                    { text: "57. O projeto de educação defendido no Manifesto coloca o estudante como centro do processo, mantendo a autoridade docente na centralização do conteúdo a ser transmitido.", answer: "E" },
+                    { text: "58. O Manifesto dos Pioneiros da Educação Nova apresenta a ideia de que a escola não seja uma simulação da vida e sim a própria vida. Essa ideia deriva do pensamento de John Dewey.", answer: "C" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens 59 a 61.</h3><p>“Os esquemas clássicos do ciclo do planejamento apresentam os seguintes “passos”: planejar, executar, avaliar. Temos restrições a essa abordagem por entendermos que a execução não pode estar separada do que foi planejado, e a avaliação não é algo que ocorre apenas no fim; ao contrário, acompanha todo o processo de colocação em prática. Por isso, afirmamos que o ciclo do planejamento, na verdade, é elaborar e realizar interativamente, o que implica a avaliação — tanto no processo como no momento de conjunto —, ou seja, não pode haver — para não ser planejamento alienado — separação na execução com aquilo que foi planejado. Essa não desvinculação da ação com a intencionalidade caracteriza a práxis.”</p><footer>VASCONCELLOS, Celso dos S. Planejamento: projeto de ensino-aprendizagem e projeto político-pedagógico. São Paulo: Libertad, 2002, p. 82, com adaptações.</footer></div>`,
+                questions: [
+                    { text: "59. A unidade entre planejamento e execução é condição essencial para a construção de um planejamento mais consistente e com maior adesão a um projeto educacional emancipador.", answer: "C" },
+                    { text: "60. Um planejamento pedagógico que não desvincula a ação da intencionalidade deve entender a realidade como ponto de partida e de chegada, sendo transformada à medida que o planejamento se concretiza a partir das ações dos sujeitos.", answer: "C" },
+                    { text: "61. A prática do planejamento é uma ação independente do currículo. O currículo é estabelecido de forma geral para todas as escolas, enquanto o planejamento pedagógico deve refletir as necessidades específicas da instituição escolar.", answer: "E" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens 62 a 65.</h3><h4>Como o Enem é feito — e como ele chega até os candidatos?</h4><p>(1º/11/2023) Nos próximos dois domingos (5 e 12 de novembro de 2023), mais de 3,9 milhões de candidatos vão fazer as provas do Exame Nacional do Ensino Médio (Enem) em todo o País. [...] As questões que compõem a prova são definidas ainda no final do primeiro semestre. [...] Os itens, como são chamadas as questões, são elaborados conforme os parâmetros do Enem e do Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (Inep). [...] Após passar por revisores e especialistas, cada questão é testada antecipadamente por um grupo de estudantes e classificada de acordo com a dificuldade. Assim, é possível compor várias provas do Enem, com temas diferentes, mas com o mesmo nível de dificuldade. [...] O Enem é composto por uma prova de redação e quatro provas com 45 questões objetivas cada: linguagens, matemática, ciências humanas e ciências da natureza.</p><footer>Exame.com, 2023. Adaptado.</footer></div>`,
+                questions: [
+                    { text: "62. A avaliação da aprendizagem prescinde da disposição psicológica do educador de acolher a realidade como ela é.", answer: "E" },
+                    { text: "63. A avaliação da aprendizagem está vinculada ao projeto pedagógico da escola. Partindo desse pressuposto, observa-se um possível descompasso entre as avaliações externas de larga escala com os projetos das escolas e suas perspectivas avaliativas, caso a instituição escolar não se baseie nesse tipo de avaliação global.", answer: "C" },
+                    { text: "64. O Enem é parte das ações que constituem as políticas públicas educacionais redistributivas.", answer: "C" },
+                    { text: "65. A forma de composição da prova do Enem busca uma abordagem multidisciplinar dos conhecimentos. O paradigma da multidisciplinaridade pressupõe a articulação de diferentes contribuições disciplinares a partir de um olhar integrador para a realidade.", answer: "E" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens 66 a 70.</h3><p>“O Projeto Político-Pedagógico (PPP) vai além de um simples agrupamento de planos de ensino e de atividades diversas. O projeto não é algo que é construído e, em seguida, arquivado ou encaminhado às autoridades educacionais como prova do cumprimento de tarefas burocráticas. Ele é construído e vivenciado em todos os momentos, por todos os envolvidos com o processo educativo da escola.”</p><footer>VEIGA, Ilma Passos Alencastro. (org.). Projeto político-pedagógico da escola: uma construção possível. 14. ed. Papirus, 2002, com adaptações.</footer></div>`,
+                questions: [
+                    { text: "66. O PPP é constituído a partir de princípios. Um dos princípios é a valorização do profissional da educação, considerando que o PPP deve prever as estratégias de formação continuada para os profissionais da escola.", answer: "C" },
+                    { text: "67. O PPP é obrigatório nas escolas públicas e facultativo nas escolas privadas.", answer: "E" },
+                    { text: "68. A elaboração do PPP em uma perspectiva libertadora deve considerar os aspectos da educação em e para os direitos humanos como forma de congregar as diferenças e garantir um espaço de formação plural e democrática.", answer: "C" },
+                    { text: "69. A construção do PPP requer continuidade das ações, descentralização, democratização do processo de tomada de decisões e instalação de um processo coletivo de avaliação de cunho emancipatório.", answer: "C" },
+                    { text: "70. De acordo com a Lei nº 4.751/2012, cada unidade escolar formulará e implementará o próprio PPP em consonância com as políticas educacionais vigentes e as normas e diretrizes da Rede Pública de Ensino do Distrito Federal.", answer: "C" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Contexto para os itens 71 a 76.</h3><p>A segunda edição do Currículo em Movimento do Distrito Federal — Educação Infantil adota a organização da Base Nacional Comum Curricular (BNCC – 2017) ressaltando a importância dos direitos de aprendizagem e desenvolvimento dos bebês, das crianças bem pequenas e das crianças pequenas.</p></div>`,
+                questions: [
+                    { text: "71. A organização curricular da educação infantil em campos de experiência visa a sistematizar as aprendizagens das crianças, que ocorrem apenas no contexto escolar.", answer: "E" },
+                    { text: "72. O desenvolvimento das noções de grandeza e de medidas é um objetivo de aprendizagem referente ao campo de experiência “traços, sons, cores e formas”.", answer: "E" },
+                    { text: "73. Ao planejar na educação infantil, o professor deve considerar as interações e as brincadeiras como pilares fundamentais para favorecer a aprendizagem e o desenvolvimento dos campos de experiência.", answer: "C" },
+                    { text: "74. Respeitar e expressar sentimentos e emoções é um objetivo de aprendizagem dos bebês, das crianças bem pequenas e também das crianças pequenas.", answer: "C" },
+                    { text: "75. Em cada campo de experiência na educação infantil, a BNCC descreve a síntese das aprendizagens com o propósito de estabelecer os pré-requisitos para o ingresso no ensino fundamental.", answer: "E" },
+                    { text: "76. Considerando a transição da educação infantil para o ensino fundamental, é impreterível a continuidade das aprendizagens e o acolhimento afetivo, evitando, dessa forma, a descontinuidade do trabalho pedagógico.", answer: "C" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens 77 a 82.</h3><p>“Repare um pouco nos estudantes. Talvez haja algum que goste muito de desenhar e pintar, produzindo excelentes desenhos, ilustrações ou mesmo charges; já outro tem grande interesse pela música e sabe tocar muito bem um instrumento. Outros podem se mostrar mais ligados ao esporte — sem muito esforço, realizam séries complexas de movimentos corporais. Mas há aqueles que desenvolvem, de forma prazerosa, raciocínios matemáticos precisos.”</p><footer>SMOLE, K. C. S. Múltiplas inteligências na prática escolar. Brasília: Ministério da Educação, Secretaria de Educação a Distância, 1999, p. 5, com adaptações.</footer></div>`,
+                questions: [
+                    { text: "77. Para Gardner, as inteligências são genuinamente inatas no ser humano, sendo relevante o papel do professor na promoção das habilidades dos estudantes.", answer: "E" },
+                    { text: "78. Gostar de cooperar, apreciar atividades em grupo e relacionar-se bem são características que podem ser observadas na inteligência intrapessoal.", answer: "E" },
+                    { text: "79. O professor pode utilizar testes padronizados como recurso de identificação e de desenvolvimento das diferentes formas de inteligência.", answer: "E" },
+                    { text: "80. De acordo com Gardner, cada ser humano tem uma forma única de combinar e manifestar as suas inteligências, conforme as experiências por ele vividas.", answer: "C" },
+                    { text: "81. Uma forma de contemplar a teoria das inteligências múltiplas na práxis é, ao planejar a aula, possibilitar a apresentação de um conceito de várias formas, a fim de ativar diferentes inteligências e (ou) combinações de inteligências.", answer: "C" },
+                    { text: "82. As características de estudantes com altas habilidades e superdotação podem ser analisadas a partir da perspectiva da teoria das inteligências múltiplas.", answer: "C" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Contexto para os itens 83 a 87.</h3><p>A teoria propicia a construção das bases do conhecimento, enquanto a prática possibilita a aplicação dos conceitos.</p></div>`,
+                questions: [
+                    { text: "83. Uma base teórica sólida passa a ser dispensável conforme o professor amplia o seu tempo de experiência no cotidiano escolar.", answer: "E" },
+                    { text: "84. A práxis valoriza a ação reflexiva de forma contextualizada.", answer: "C" },
+                    { text: "85. O registro do próprio trabalho é fundamental para reflexão e desenvolvimento de novas práticas. O diário de bordo é uma ferramenta comumente utilizada no dia a dia dos professores para essa finalidade.", answer: "C" },
+                    { text: "86. Considerando a autonomia do professor, a escolha de uma teoria pedagógica para aplicação pode estar desvinculada do contexto dos estudantes.", answer: "E" },
+                    { text: "87. A formação continuada é de responsabilidade somente do professor, que deve buscar instituições idôneas para realizá-la.", answer: "E" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens 88 a 93.</h3><p>“As linguagens, antes articuladas, passam a ter status próprios de objetos de conhecimento escolar. O importante, assim, é que os estudantes se apropriem das especificidades de cada linguagem, sem perder a visão do todo no qual elas estão inseridas. Mais do que isso, é relevante que compreendam que as linguagens são dinâmicas e que todos participam desse processo de constante transformação.”</p><footer>BRASIL. Base Nacional Comum Curricular. Brasília: Ministério da Educação, 2017, p. 6.</footer></div>`,
+                questions: [
+                    { text: "88. A professora pediu que os estudantes levassem uma conta de luz para a aula de matemática. Ela orientou que eles explorassem os dados contidos nela [...]. Essa proposta de atividade é uma forma de proporcionar o letramento matemático.", answer: "C" },
+                    { text: "89. Propor que os estudantes criem apresentações digitais — vídeos curtos ou slides, por exemplo — para ilustrar resolução de problemas [...] permite que eles utilizem a tecnologia na aprendizagem da matemática e desenvolvam a habilidade comunicativa.", answer: "C" },
+                    { text: "90. No que diz respeito ao ensino de linguagens nos anos iniciais do ensino fundamental, a utilização de atividades lúdicas deixa de ser uma estratégia, pois existe a necessidade de diferenciar essa etapa da educação infantil.", answer: "E" },
+                    { text: "91. De maneira geral, os estudantes estão familiarizados com as tecnologias digitais [...]. Cabe à escola não somente incluí-las, mas também dar suporte para se desenvolver um olhar crítico sobre essas novas práticas de linguagem.", answer: "C" },
+                    { text: "92. O ensino das ciências da natureza no ensino fundamental preconiza o processo investigativo no sentido mais restrito, com manipulação de objetos e experimentos em laboratório.", answer: "E" },
+                    { text: "93. O conhecimento prévio dos estudantes acerca de fenômenos da natureza e tecnológicos são dispensáveis no processo da construção do conhecimento sistematizado por serem senso comum.", answer: "E" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens 94 a 97.</h3><p>“Vivem dentro de mim o menino que eu fui e o que eu gostaria de ter sido e não pude ser e que, hoje, procuro ser. Não deixem morrer em vocês as meninas e os meninos que são hoje para que jamais envelheçam, apenas fiquem maduros.”</p><footer>FREIRE, P. Pedagogia da tolerância. São Paulo: Editora Unesp, 2004, p. 270.</footer></div>`,
+                questions: [
+                    { text: "94. A andragogia valoriza a participação ativa dos estudantes, tendo em vista que o adulto tende a ser mais autodirigido e autoconsciente com relação ao seu processo de aprendizagem, se comparado a uma criança. Nesse contexto, aulas expositivas devem ser abolidas.", answer: "E" },
+                    { text: "95. O planejamento voltado para a aprendizagem de adultos deve considerar que eles são motivados por necessidades extrínsecas e por fatores externos.", answer: "E" },
+                    { text: "96. A experiência de vida dos estudantes é o ponto de partida para a construção de novos saberes.", answer: "C" },
+                    { text: "97. Dadas as particularidades da aprendizagem de adultos, é essencial que o currículo seja flexível e tenha como objetivo promover a reflexão.", answer: "C" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Contexto para os itens 98 a 103.</h3><p>Jean Piaget, Henry Wallon e Lev Vygotsky, cada qual em seu tempo e contexto, investigaram e construíram suas teorias relacionadas à aprendizagem das crianças e ao desenvolvimento humano.</p></div>`,
+                questions: [
+                    { text: "98. O professor que incentiva a autonomia dos estudantes na resolução de problemas, de forma que apliquem seus conhecimentos prévios, identifiquem suas dificuldades e elaborem novos conhecimentos, dialoga com o construtivismo de Piaget.", answer: "C" },
+                    { text: "99. Um estudante, ao longo de sua vida, construiu um conjunto de regras e princípios éticos que aprendeu em casa e na escola. Porém, ao enfrentar dilemas morais mais complexos [...], ele precisou ajustar suas crenças e seus valores para ampliar seu sistema moral. Esse processo, segundo Piaget, pode ser denominado equilibração.", answer: "E" },
+                    { text: "100. Um dos pilares da teoria de Wallon é a ênfase na importância do desenvolvimento emocional no processo de aprendizagem [...]. Ele também cunhou o termo “escuta sensível” como estratégia para desenvolver essa dimensão dos estudantes.", answer: "E" },
+                    { text: "101. Ao proporcionar atividades que sejam promotoras da colaboração entre estudantes em sala de aula, o professor está embasado exclusivamente na perspectiva do desenvolvimento e da aprendizagem de Vygotsky, pois é o teórico que enfatiza a importância das interações sociais.", answer: "E" },
+                    { text: "102. Suponha que, em uma brincadeira de faz de conta, um grupo de crianças com diferentes níveis de abstração vivencie uma situação de “cuidados da casa”... É possível considerar essa situação hipotética como um exemplo do conceito de zona de desenvolvimento proximal proposta por Vygotsky.", answer: "C" },
+                    { text: "103. Para Vygotsky, a linguagem tem grande relevância para o desenvolvimento cognitivo. É uma habilidade inata do ser humano e desenvolve-se independentemente das interações sociais e culturais.", answer: "E" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens 104 a 109.</h3><p>“Nas últimas décadas, as discussões a respeito de currículo ganharam relevância em virtude, principalmente, da centralidade que assumiu nas reformas que se processaram na educação, sendo utilizado como campo estratégico da disseminação do significado político das mudanças decorrentes do contexto neoliberal, o que passou a demandar novos estudos e orientações para a escola.”</p><footer>NASCIMENTO, I. et al. Currículo Escolar: dimensões pedagógicas e políticas. São Luís - MA: Edufma, 2010, p. 9, com adaptações.</footer></div>`,
+                questions: [
+                    { text: "104. No currículo tradicional, o professor é a figura central na transmissão do conhecimento. Por meio de seu planejamento estruturado e composto por sequências fixas, oportuniza ao estudante a possibilidade de desenvolver o pensamento crítico.", answer: "E" },
+                    { text: "105. A superação da visão classificatória da avaliação e a educação para além do desenvolvimento das habilidades acadêmicas são características do currículo humanista.", answer: "C" },
+                    { text: "106. Ao priorizar o desenvolvimento das habilidades sociais e emocionais, o currículo tecnicista prepara os estudantes para o mundo do trabalho.", answer: "E" },
+                    { text: "107. Ao promover a participação ativa de estudantes na identificação e no enfrentamento de problemas sociais, o professor, que é visto como facilitador na construção do conhecimento, está baseando a sua prática no currículo crítico.", answer: "C" },
+                    { text: "108. O currículo pós-moderno enaltece a pluralidade de saberes e desconsidera o uso das tecnologias digitais, já que tal recurso pode comprometer o processo de ensino e aprendizagem reflexivo.", answer: "E" },
+                    { text: "109. O currículo oculto consiste em aspectos não intencionais como conjunto de valores, atitudes e normas, que são perpassados de forma implícita, exercendo pouca influência na aprendizagem dos estudantes.", answer: "E" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Contexto para os itens 110 a 115.</h3><p>O planejamento de ensino é, antes de tudo, um processo complexo, pois abrange várias etapas e elementos que precisam estar em congruência com as concepções do professor. Envolve clareza dos objetivos, seleção de conteúdos, métodos e recursos didáticos, assim como instrumentos de avaliação condizentes com esse processo.</p></div>`,
+                questions: [
+                    { text: "110. Ao se fundamentar nos documentos orientadores, o planejamento de ensino deve também considerar o contexto do estudante, criando estratégias que promovam a aprendizagem.", answer: "C" },
+                    { text: "111. Ao realizar uma avaliação diagnóstica ao término do ano letivo, o professor poderá observar o resultado da aprendizagem dos seus estudantes, bem como identificar habilidades e possíveis dificuldades em determinado conteúdo.", answer: "E" },
+                    { text: "112. O objetivo geral descreve, de forma global, o que se espera atingir ao final de determinado período no processo de ensino. Os objetivos específicos dialogam com o objetivo geral [...].", answer: "C" },
+                    { text: "113. A avaliação formativa é caracterizada pelo acompanhamento contínuo do desenvolvimento do estudante. Nesse contexto, o portfólio pode ser um instrumento de avaliação, pois valoriza todo o percurso percorrido pelo estudante.", answer: "C" },
+                    { text: "114. Apesar de terem características distintas, as avaliações somativa e formativa podem ser complementares dentro de um planejamento de ensino.", answer: "C" },
+                    { text: "115. A utilização da multimídia educativa enriquece e dinamiza o processo de ensino e aprendizagem, sendo, no entanto, pouco inclusivo.", answer: "E" }
+                ]
+            },
+            {
+                context: `<div class="context-box"><h3>Texto para os itens 116 a 120.</h3><p>“Apesar das muitas variantes que atravessam o complexo das ideias pedagógicas no Brasil, suas linhas fundamentais se fixaram em algumas tendências básicas que marcaram a organização das escolas, assim como a concepção e a atuação dos educadores.”</p><footer>SAVIANI, D. História das ideias pedagógicas no Brasil. 2. ed. Campinas, SP: Autores Associados, 2008, p. 446.</footer></div>`,
+                questions: [
+                    { text: "116. As reformas pombalinas no Brasil tinham o intuito de estabelecer uma escola que atendesse aos propósitos do Estado e que também servisse aos interesses eclesiásticos.", answer: "E" },
+                    { text: "117. O movimento que gerou o Manifesto dos Pioneiros da Educação Nova, publicado em 1932, tinha como essência a visão da escola pública, gratuita, laica e obrigatória.", answer: "C" },
+                    { text: "118. Na concepção tecnicista, professor e estudante ocupam papel secundário, tendo em vista que o planejamento e a coordenação podem ser realizados por especialistas de fora da unidade escolar.", answer: "C" },
+                    { text: "119. Na pedagogia tradicional, o estudante é o centro do processo educativo. Na pedagogia nova, o professor torna-se sujeito desse processo.", answer: "E" },
+                    { text: "120. A educação emancipatória, que visa à transformação social, constitui-se de características da pedagogia libertadora.", answer: "C" }
+                ]
+            }
+        ];
+
+        const quizForm = document.getElementById('quizForm');
+        let formHTML = '';
+        let questionCounter = 0;
+
+        allQuizData.forEach(section => {
+            // Adiciona o bloco de contexto ao HTML string
+            formHTML += section.context;
+
+            // Adiciona as questões da seção ao HTML string
+            section.questions.forEach(q => {
+                formHTML += `
+                    <div class="question" id="question-${questionCounter}">
+                        <p>${q.text}</p>
+                        <div class="options">
+                            <label><input type="radio" name="q${questionCounter}" value="C"> Certo</label>
+                            <label><input type="radio" name="q${questionCounter}" value="E"> Errado</label>
+                        </div>
+                    </div>
+                `;
+                questionCounter++;
+            });
+        });
+        
+        // Insere o HTML construído no formulário de uma só vez
+        quizForm.innerHTML = formHTML;
+
+        const allQuestions = allQuizData.flatMap(section => section.questions);
+
+        function checkAnswers() {
+            const resultsContainer = document.getElementById('results');
+            let correctAnswers = 0;
+            let incorrectAnswers = 0;
+            let blankAnswers = 0;
+
+            allQuestions.forEach((q, index) => {
+                const questionElement = document.getElementById(`question-${index}`);
+                questionElement.classList.remove('correct', 'incorrect');
+                const userAnswer = document.querySelector(`input[name="q${index}"]:checked`);
+
+                if (userAnswer) { // Se a questão foi respondida
+                    if (userAnswer.value === q.answer) {
+                        correctAnswers++;
+                        questionElement.classList.add('correct');
+                    } else {
+                        incorrectAnswers++;
+                        questionElement.classList.add('incorrect');
+                    }
+                } else { // Se a questão foi deixada em branco
+                    blankAnswers++;
+                    // Optional: add a class for blank questions if you want to style them
+                    // questionElement.classList.add('blank');
+                }
+            });
+
+            const finalScore = (correctAnswers * 1.0) - (incorrectAnswers * 0.5);
+
+            resultsContainer.innerHTML = `
+                <h2>Cálculo da Nota</h2>
+                <p>Questões Corretas: <strong>${correctAnswers}</strong> (+${(correctAnswers * 1.0).toFixed(2)} pontos)</p>
+                <p>Questões Erradas: <strong>${incorrectAnswers}</strong> (-${(incorrectAnswers * 0.5).toFixed(2)} pontos)</p>
+                <p>Questões em Branco: <strong>${blankAnswers}</strong> (0.00 pontos)</p>
+                <h3>Nota Final: ${finalScore.toFixed(2)} / 120.00</h3>
+            `;
+            resultsContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>
